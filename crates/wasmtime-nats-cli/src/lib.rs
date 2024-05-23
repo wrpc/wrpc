@@ -101,8 +101,8 @@ pub async fn run() -> anyhow::Result<()> {
     let component = Component::new(&engine, &wasm).context("failed to compile component")?;
 
     let mut linker = Linker::<Ctx<wrpc_transport_nats::Client>>::new(&engine);
-    runtime::wasmtime_bindings::Interfaces::add_to_linker(&mut linker, |ctx| ctx)
-        .context("failed to link `wrpc:runtime/interfaces` interface")?;
+    Command::add_to_linker(&mut linker, |ctx| ctx)
+        .context("failed to link `wasi:cli/command` interface")?;
 
     wasmtime_wasi::add_to_linker_async(&mut linker).context("failed to link WASI")?;
 
